@@ -1,0 +1,48 @@
+<!-- This customers-list component is a CHILD component of the CUSTOMERS component -->
+
+<!-- Have to hook to the (changed) output property to the filtering function in customers-list.component.ts. Use ($event) as Angular's way to connect to the event in the filter-textbox.component.ts. This is the standard event binding syntax. -->
+<filter-textbox (changed)="filter($event)"></filter-textbox>
+
+<br />
+<br />
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <!-- (click) is the raw DOM event. Event binding syntax. Connects with the sorting service in customers-list.component.ts-->
+      <th (click)="sort('name')">Name</th>
+      <th (click)="sort('city')">City</th>
+      <th (click)="sort('orderTotal')">Order Total</th>
+    </tr>
+  </thead>
+
+  <!-- *ngFor is a "structural directive" bc it changes the structure of the DOM. Looping thru each customer and adding a row as we go. "let cust" scopes a variable JUST TO THIS LOOP. whaaaat! -->
+  <tr *ngFor="let cust of filteredCustomers">
+    <td>
+      <!-- Angular built-in pipes. Takes data on left and runs through the pipe. Formats accordingly -->
+      <!-- <a> {{ cust.name | titlecase }} </a> -->
+
+      <!-- Property bind to the routerLink directive [routerLink] -->
+      <!-- You can also do custom pipes! Refer to capitalize.pipe.ts -->
+      <a [routerLink]="['/orders', cust.id]"> {{ cust.name | capitalize }} </a>
+    </td>
+    <td>{{ cust.city }}</td>
+
+    <!-- |currency is another built in Angular pipe. Can pass parameters into the transform() function built into the pipe. currencyCode in this case refers to the property in customers-list.component.ts -->
+    <td>{{ cust.orderTotal | currency: currencyCode:"symbol" }}</td>
+  </tr>
+
+  <!-- Add or remove filteredCustomers from the DOM if (1) it exists and (2) the array is greater than zero -->
+  <tr *ngIf="filteredCustomers && filteredCustomers.length">
+    <td colspan="2">&nbsp;</td>
+    <td>{{ customersOrderTotal | currency: currencyCode:"symbol" }}</td>
+  </tr>
+
+  <tr *ngIf="!filteredCustomers || !filteredCustomers.length">
+    <td colspan="4">No customers found</td>
+  </tr>
+</table>
+
+Number of Customers: {{ filteredCustomers.length }}
+
+<br />

@@ -1,0 +1,11 @@
+<!-- The "title" that is being injected with interpolation is set in customers.component.ts  -->
+<!-- [Hidden] is a property name, set to "true" by default in customers.component.ts -->
+<h1 [hidden]="!isVisible">{{ title }}</h1>
+
+<!-- (click) is an event, set to the changeVisibility function in customers.component.ts -->
+<button (click)="changeVisibility()">Click to show/hide page header</button>
+
+<br />
+
+<!-- <customers-list> is the selector for the customers list component. Passing the "people" data from the parent (in this case customers.component.ts) into the child component (customers-list.component.ts) -->
+<customers-list [customers]="people"></customers-list>
